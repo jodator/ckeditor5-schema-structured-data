@@ -54,9 +54,14 @@ export default class SchemaStructuredDataEditing extends Plugin {
 			} );
 
 		buildModelConverter()
-			.for( data.modelToView, editing.modelToView )
+			.for( data.modelToView )
 			.fromAttribute( 'schemaItemProp' )
 			.toElement( data => new AttributeElement( 'span', { itemprop: data } ) );
+
+		buildModelConverter()
+			.for( editing.modelToView )
+			.fromAttribute( 'schemaItemProp' )
+			.toElement( data => new AttributeElement( 'span', { itemprop: data, title: data } ) );
 
 		buildViewConverter().for( data.viewToModel )
 			.fromAttribute( 'itemprop' )
