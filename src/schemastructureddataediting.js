@@ -1,8 +1,9 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
-import buildViewConverter from '../../ckeditor5-engine/src/conversion/buildviewconverter';
-import { eventNameToConsumableType } from '../../ckeditor5-engine/src/conversion/model-to-view-converters';
-import buildModelConverter from '../../ckeditor5-engine/src/conversion/buildmodelconverter';
-import AttributeElement from '../../ckeditor5-engine/src/view/attributeelement';
+import buildViewConverter from '@ckeditor/ckeditor5-engine/src/conversion/buildviewconverter';
+import { eventNameToConsumableType } from '@ckeditor/ckeditor5-engine/src/conversion/model-to-view-converters';
+import buildModelConverter from '@ckeditor/ckeditor5-engine/src/conversion/buildmodelconverter';
+import AttributeElement from '@ckeditor/ckeditor5-engine/src/view/attributeelement';
+import viewWriter from '@ckeditor/ckeditor5-engine/src/view/writer';
 
 const schemaOrgUri = 'http://schema.org/';
 
@@ -21,6 +22,7 @@ export default class SchemaStructuredDataEditing extends Plugin {
 
 		schema.allow( { name: '$block', attributes: 'schemaItem', inside: '$root' } );
 
+		schema.allow( { name: '$inline', attributes: 'schemaItem', inside: '$block' } );
 		schema.allow( { name: '$inline', attributes: 'schemaItemProp', inside: '$block' } );
 		schema.allow( { name: '$inline', attributes: 'schemaItemProp', inside: '$clipboardHolder' } );
 
@@ -94,7 +96,20 @@ function setAttributes( setAttributeFn ) {
 
 		const attributes = setAttributeFn( data.attributeNewValue );
 
-		const viewElement = conversionApi.mapper.toViewElement( data.item );
+		let viewElement = conversionApi.mapper.toViewElement( data.item );
+
+		if ( !viewElement ) {
+			viewElement = new AttributeElement( 'span' );
+
+			for ( const key in attributes ) {
+				viewElement.setAttribute( key, attributes[ key ] );
+			}
+
+			const viewRange = conversionApi.mapper.toViewRange( data.range );
+
+			conversionApi.mapper.bindElements( data.item, viewElement );
+			viewWriter.wrap( viewRange, viewElement );
+		}
 
 		for ( const key in attributes ) {
 			viewElement.setAttribute( key, attributes[ key ] );

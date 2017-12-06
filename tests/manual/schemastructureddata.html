@@ -1,0 +1,24 @@
+<style>
+	[itemprop] {
+		background: rgba(255, 255, 170, 0.8);
+	}
+
+	[itemscope] {
+		border: 1px solid rgba(0, 0, 0, 0.3);
+		background: rgba(0, 0, 0, 0.1);
+	}
+</style>
+
+<div id="editor">
+	<p>A <a href="http://schema.org">schema.org</a> Structured Data example.</p>
+
+	<h3>Product markup example:</h3>
+	<p itemscope itemtype="http://schema.org/Product">
+		<span itemprop="name">Beer</span>,
+		<span itemprop="description">Cold and delicious beer.</span>
+		<span itemprop="brand" itemscope itemtype="http://schema.org/Brand">
+			<span itemprop="name">Beer Company</span>
+		</span>
+		Available for: <span itemprop="offers" itemscope itemtype="http://schema.org/Offer"><span itemprop="price">free</span></span>
+	</p>
+</div>
