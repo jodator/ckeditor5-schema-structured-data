@@ -2,6 +2,7 @@
 
 import SchemaStructuredData from './../src/schemastructureddata';
 import SchemaStructuredDataEditing from '../src/schemastructureddataediting';
+import SchemaStructuredDataUI from '../src/schemastructureddataui';
 
 import ClassicTestEditor from '@ckeditor/ckeditor5-core/tests/_utils/classictesteditor';
 
@@ -32,6 +33,6 @@ describe( 'SchemaStructuredData', () => {
 	} );
 
 	it( 'requires SchemaStructuredDataEditing and SchemaStructuredDataUI', () => {
-		expect( SchemaStructuredData.requires ).to.deep.equal( [ SchemaStructuredDataEditing ] );
+		expect( SchemaStructuredData.requires ).to.deep.equal( [ SchemaStructuredDataEditing, SchemaStructuredDataUI ] );
 	} );
 } );
