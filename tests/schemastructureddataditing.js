@@ -32,19 +32,36 @@ describe( 'SchemaStructuredDataEditing', () => {
 
 	describe( 'data pipeline conversions', () => {
 		it( 'should convert block with defined item', () => {
-			editor.setData( '<p itemscope itemtype="http://schema.org/Article">foo</p>' );
+			editor.setData( '<p itemscope itemtype="http://schema.org/Product">foo</p>' );
 
-			expect( getModelData( doc ) ).to.equal( '<paragraph schemaItem="Article">[]foo</paragraph>' );
+			expect( getModelData( doc ) ).to.equal( '<paragraph schemaItem="Product">[]foo</paragraph>' );
 
-			expect( editor.getData() ).to.equal( '<p itemtype="http://schema.org/Article" itemscope="itemscope">foo</p>' );
+			expect( editor.getData() ).to.equal( '<p itemtype="http://schema.org/Product" itemscope="itemscope">foo</p>' );
+		} );
+
+		it( 'should convert block with defined item property', () => {
+			editor.setData( '<p itemscope itemtype="http://schema.org/Product">foo <span itemprop="name">bar</span></p>' );
+
+			expect( getModelData( doc ) )
+				.to.equal( '<paragraph schemaItem="Product">[]foo <$text schemaItemProp="name">bar</$text></paragraph>' );
+
+			expect( editor.getData() )
+				.to.equal( '<p itemtype="http://schema.org/Product" itemscope="itemscope">foo <span itemprop="name">bar</span></p>' );
 		} );
 	} );
 
 	describe( 'editing pipeline conversion', () => {
 		it( 'should convert block with defined item', () => {
-			setModelData( doc, '<paragraph schemaItem="Article">[]foo</paragraph>' );
+			setModelData( doc, '<paragraph schemaItem="Product">[]foo</paragraph>' );
 
-			expect( editor.getData() ).to.equal( '<p itemtype="http://schema.org/Article" itemscope="itemscope">foo</p>' );
+			expect( editor.getData() ).to.equal( '<p itemtype="http://schema.org/Product" itemscope="itemscope">foo</p>' );
+		} );
+
+		it( 'should convert block with defined item property', () => {
+			setModelData( doc, '<paragraph schemaItem="Product">[]foo <$text schemaItemProp="name">bar</$text></paragraph>' );
+
+			expect( editor.getData() )
+				.to.equal( '<p itemtype="http://schema.org/Product" itemscope="itemscope">foo <span itemprop="name">bar</span></p>' );
 		} );
 	} );
 } );

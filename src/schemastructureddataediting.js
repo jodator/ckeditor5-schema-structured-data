@@ -1,6 +1,8 @@
 import Plugin from '@ckeditor/ckeditor5-core/src/plugin';
 import buildViewConverter from '../../ckeditor5-engine/src/conversion/buildviewconverter';
 import { eventNameToConsumableType } from '../../ckeditor5-engine/src/conversion/model-to-view-converters';
+import buildModelConverter from '../../ckeditor5-engine/src/conversion/buildmodelconverter';
+import AttributeElement from '../../ckeditor5-engine/src/view/attributeelement';
 
 const schemaOrgUri = 'http://schema.org/';
 
@@ -45,6 +47,27 @@ export default class SchemaStructuredDataEditing extends Plugin {
 
 				return {
 					key: 'schemaItem',
+					value: attribute
+				};
+			} );
+
+		buildModelConverter()
+			.for( data.modelToView, editing.modelToView )
+			.fromAttribute( 'schemaItemProp' )
+			.toElement( data => new AttributeElement( 'span', { itemprop: data } ) );
+
+		buildViewConverter().for( data.viewToModel )
+			.fromAttribute( 'itemprop' )
+			.consuming( { attribute: [ 'itemprop' ] } )
+			.toAttribute( viewBlock => {
+				const attribute = viewBlock.getAttribute( 'itemprop' );
+
+				if ( !attribute ) {
+					return;
+				}
+
+				return {
+					key: 'schemaItemProp',
 					value: attribute
 				};
 			} );
