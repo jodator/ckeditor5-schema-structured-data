@@ -1,5 +1,5 @@
 {
-  "name": "jodator/schema-structured-data",
+  "name": "ckeditor5-schema-structured-data",
   "version": "0.0.1",
   "description": "Schema structured data feature for CKEditor 5.",
   "keywords": [
