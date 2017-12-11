@@ -8,7 +8,7 @@ ClassicEditor
 	.create( document.querySelector( '#editor' ), {
 		plugins: [ ArticlePluginSet, SchemaStructuredData ],
 		toolbar: [
-			'headings', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'
+			'headings', 'schema', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo'
 		]
 	} )
 	.then( editor => {
